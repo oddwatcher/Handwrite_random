@@ -1,4 +1,4 @@
-import os
+
 #this file used to reconfigure laser plotter to z plotter
 #G0 is rapid move ,G1 is writing move
 ncpath = "./1.nc"
