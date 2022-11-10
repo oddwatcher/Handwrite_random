@@ -31,12 +31,13 @@ def stokeprocess(stoke,flag):
     del stoke[1]
     vX = random.randint(-30, 30)/100
     vY = random.randint(-40, 40)/100
-    d0 = cvgline(stoke[0])
-    d1 = cvgline(stoke[1])
-    l = 0
-    ldlist = [0]
-    dxlist = [0]
-    dylist = [0]
+    if len(stoke) >1:
+        d0 = cvgline(stoke[0])
+        d1 = cvgline(stoke[1])
+        l = 0
+        ldlist = [0]
+        dxlist = [0]
+        dylist = [0]
     if len(stoke)>2:
         for i in range(2,len(stoke)):
             dx = d1[0]-d0[0]
