@@ -29,7 +29,7 @@ def stokeprocess(stoke,flag):
 #stoke is a list of gcode from the entry to exit
     del stoke[0]
     del stoke[1]
-    vX = random.randint(-40, 40)/100
+    vX = random.randint(-30, 30)/100
     vY = random.randint(-40, 40)/100
     d0 = cvgline(stoke[0])
     d1 = cvgline(stoke[1])
