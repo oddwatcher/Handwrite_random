@@ -25,12 +25,12 @@ def addvec(str,vX,vY):
     return cvlineg(nums,getg01(str))
 
 
-def stokeprocess(stoke,flag):
+def stokeprocess(stoke,flag,ranX,ranY):
 #stoke is a list of gcode from the entry to exit
     del stoke[0]
     del stoke[1]
-    vX = random.randint(-30, 30)/100
-    vY = random.randint(-40, 40)/100
+    vX = random.randint(-ranX, ranX)/100
+    vY = random.randint(-ranY, ranY)/100
     if len(stoke) >1:
         d0 = cvgline(stoke[0])
         d1 = cvgline(stoke[1])
@@ -78,6 +78,10 @@ stokes = []
 Glist =  Din.readlines()
 Beg = False
 alt = True
+#ranX = int(input('the X random range 1/100 mm: '))
+#ranY = int(input('the Y random range 1/100 mm: '))
+ranX = 40
+ranY = 20
 for i in range(0,len(Glist)):
     if Glist[i] == 'M5\n':
         Beg = not Beg
@@ -89,7 +93,7 @@ for i in range(0,len(Glist)):
         stokes.append(Glist[i])
     else:
         if len(stokes)!=0 :
-            Dout.writelines(stokeprocess(stokes,alt))
+            Dout.writelines(stokeprocess(stokes,alt,ranX,ranY))
             alt = True
             stokes=list()
             stokes.append(Glist[i])
