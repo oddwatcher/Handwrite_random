@@ -82,10 +82,11 @@ alt = True
 #ranY = int(input('the Y random range 1/100 mm: '))
 ranX = 40
 ranY = 20
+p=0
 for i in range(0,len(Glist)):
     if Glist[i] == 'M5\n':
         Beg = not Beg
-    if i%stokenum == 0:
+    if p%stokenum == 0:
         alt = False
     else:
         alt = True
@@ -98,6 +99,7 @@ for i in range(0,len(Glist)):
             stokes=list()
             stokes.append(Glist[i])
             Beg = not Beg
+            p = p+1
         else :
             print(Glist[i],end='')
             Dout.write(Glist[i])
