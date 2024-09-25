@@ -25,7 +25,7 @@ def addvec(str,vX,vY):
     return cvlineg(nums,getg01(str))
 
 
-def stokeprocess(stoke,flag,ranX,ranY):
+def stokeprocess(stoke,flag,ranX,ranY,lengthadj):
 #stoke is a list of gcode from the entry to exit
     del stoke[0]
     del stoke[1]
@@ -39,7 +39,7 @@ def stokeprocess(stoke,flag,ranX,ranY):
         dxlist = [0]
         dylist = [0]
     if len(stoke)>2:
-        for i in range(2,len(stoke)):
+        for i in range(2,len(stoke)): #calculate the total length of stoke
             dx = d1[0]-d0[0]
             dxlist.append(dx)
             dy = d1[1]-d0[1]
@@ -49,19 +49,19 @@ def stokeprocess(stoke,flag,ranX,ranY):
             d0 = d1
             d1 = cvgline(stoke[i])
         if flag :
-            stoke[0] = addvec(stoke[0],vX,vY)
+            stoke[0] = addvec(stoke[0],vX,vY) #if flag is true then apply drag to stroke
             for i in range(1,len(stoke)):
                 stoke[i] = addvec(stoke[i],vX,vY)
                 vX = int(vX*(l-ldlist[i-1])/l *100)/100
                 vY = int(vY*(l-ldlist[i-1])/l *100)/100
         else:
-            stoke[0] = addvec(stoke[0],vX,vY)
+            stoke[0] = addvec(stoke[0],vX,vY) #use gradual movement to shorten stroke
             temp = cvgline(stoke[0])
             pX = temp[0]
             pY = temp[1]
             for i in range(1,len(stoke)):
-                pX = int((pX +dxlist[i-1]*0.9)*100)/100
-                pY = int((pY +dylist[i-1]*0.95)*100)/100
+                pX = int((pX +dxlist[i-1]*lengthadj)*100)/100
+                pY = int((pY +dylist[i-1]*lengthadj)*100)/100
                 stoke[i] = f'G{getg01(stoke[i])} X{pX} Y{pY}\n'
 
     stoke.insert(0,'M5\n')
@@ -80,6 +80,8 @@ Beg = False
 alt = True
 #ranX = int(input('the X random range 1/100 mm: '))
 #ranY = int(input('the Y random range 1/100 mm: '))
+#lengthadj = (100-int(input('adjust the length alter level 0 - 100: ')))/100
+lengthadj = 0.97
 ranX = 40
 ranY = 20
 p=0
@@ -94,7 +96,7 @@ for i in range(0,len(Glist)):
         stokes.append(Glist[i])
     else:
         if len(stokes)!=0 :
-            Dout.writelines(stokeprocess(stokes,alt,ranX,ranY))
+            Dout.writelines(stokeprocess(stokes,alt,ranX,ranY,lengthadj))
             alt = True
             stokes=list()
             stokes.append(Glist[i])
